@@ -1,0 +1,61 @@
+/* global */
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+html,
+body {
+	height: 100%;
+}
+
+body {
+	font-family: "open-sans", "Arial", sans-serif;
+	color: #AEAEAE;
+	background: #444444;
+	margin: 0;
+	padding: 0;
+	cursor:default;
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-o-user-select: none;
+}
+
+body > div,
+body > div > div {
+	height: 100%;
+	min-height: 100%;
+}
+
+body .home {
+	min-height: 100%;
+	display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;      /* TWEENER - IE 10 */
+    display: -webkit-flex;     /* NEW - Chrome */
+    display: flex;             /* NEW, Spec - Opera 12.1, Firefox 20+ */
+}
+
+
+/* home */
+
+.home {
+    width:1258px;
+    margin:0px auto;
+}
+
+scatter-chart .axis path, .axis line {
+    fill: none;
+    stroke: #999;
+    shape-rendering: crispEdges;
+}
+
+scatter-chart .tick {
+    font-size: 10px;
+}
+
+scatter-chart circle {
+    fill: steelblue;
+}
