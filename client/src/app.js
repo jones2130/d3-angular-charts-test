@@ -45,13 +45,26 @@ require('./D3Viz.States');
 
 var HomeCtrl = require('./controllers/home/HomeCtrl');
 
+var BargraphTestCtrl = require('./controllers/bargraph-test/BargraphTestCtrl');
+var LinegraphTestCtrl = require('./controllers/linegraph-test/LinegraphTestCtrl');
 var LogGeneratorCtrl = require('./controllers/log-generator/LogGeneratorCtrl');
+var PiechartTestCtrl = require('./controllers/piechart-test/PiechartTestCtrl');
 
+var Bargraph_Directive = require('./directives/bargraph/Bargraph.Directive.js');
+var Linegraph_Directive = require('./directives/linegraph/Linegraph.Directive.js');
+var Piechart_Directive = require('./directives/piechart/Piechart.Directive.js');
 var ScatterChart_Directive = require('./directives/scatterChart/ScatterChart.Directive.js');
 
 var app = angular.module('D3Viz', ['angular-storage', 'angular-jwt', 'ui.router', 'D3Viz.Constants', 'D3Viz.Services', 'D3Viz.States']);
 
-app.controller('HomeCtrl', ['$http', '$scope', '$state', 'store', HomeCtrl]);
-app.controller('LogGeneratorCtrl', ['$interval', '$rootScope', '$scope', LogGeneratorCtrl]);
+app.controller('HomeCtrl', ['$http', '$rootScope', '$scope', '$state', '$window', 'store', HomeCtrl]);
 
+app.controller('BargraphTestCtrl', ['$interval', '$rootScope', '$scope', BargraphTestCtrl]);
+app.controller('LinegraphTestCtrl', ['$interval', '$rootScope', '$scope', LinegraphTestCtrl]);
+app.controller('LogGeneratorCtrl', ['$interval', '$rootScope', '$scope', LogGeneratorCtrl]);
+app.controller('PiechartTestCtrl', ['$interval', '$rootScope', '$scope', PiechartTestCtrl]);
+
+app.directive('bargraph', ['BARGRAPH_OPTIONS', 'd3', Bargraph_Directive]);
 app.directive('scatterChart', ['d3', ScatterChart_Directive]);
+app.directive('piechart', ['PIECHART_OPTIONS', 'd3', Piechart_Directive]);
+app.directive('linegraph', ['LINEGRAPH_OPTIONS', 'd3', Linegraph_Directive]);

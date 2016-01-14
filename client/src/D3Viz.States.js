@@ -22,8 +22,17 @@ var app = angular.module('D3Viz.States', ['ui.router'])
 			.state('home.app', {
 				url: '',
 				views: {
+                    'bargraphTest': {
+                        templateUrl: 'src/templates/BargraphTest.htm'
+                    },
                     'logGenerator' : {
                         templateUrl: 'src/templates/LogGenerator.htm'
+                    },
+                    'piechartTest' : {
+                        templateUrl: 'src/templates/PiechartTest.htm'
+                    },
+                    'linegraphTest': {
+                        templateUrl: 'src/templates/LinegraphTest.htm'
                     }
 				}
 			})

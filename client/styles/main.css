@@ -38,11 +38,9 @@ body .home {
     display: flex;             /* NEW, Spec - Opera 12.1, Firefox 20+ */
 }
 
-
 /* home */
 
 .home {
-    width:1258px;
     margin:0px auto;
 }
 
@@ -57,5 +55,74 @@ scatter-chart .tick {
 }
 
 scatter-chart circle {
+    fill: steelblue;
+}
+
+#piechart-test {
+    height: 100%;
+}
+
+#piechart-test .piechart-container {
+    height: 100%;
+    display:flex;
+    flex-direction: column;
+}
+
+#piechart-test .piechart {
+    flex-grow: 1;
+    flex-direction: column;
+}
+
+#piechart-test .piechart svg {
+   width: 100%;
+   height: 100%;
+}
+
+#piechart-test .piechart svg .bg circle {
+    fill: #FFFFFF;
+}
+
+#piechart-test .piechart svg .ring circle {
+    fill: none;
+    stroke-width: 1px;
+    stroke: #CCCCCC;
+}
+
+linegraph .axis path, .axis line {
+    fill: none;
+    stroke: #999;
+    shape-rendering: crispEdges;
+}
+
+linegraph .tick {
+    font-size: 10px;
+}
+
+linegraph circle {
+    fill: steelblue;
+}
+
+linegraph .data .data-line {
+    stroke-width: 1px;
+    stroke: steelblue;
+    fill: none;
+}
+
+linegraph .data .data-area {
+    fill: steelblue;
+    opacity: 0.5;
+}
+
+bargraph .axis path, .axis line {
+    fill: none;
+    stroke: #999;
+    shape-rendering: crispEdges;
+}
+
+bargraph .tick {
+    font-size: 10px;
+}
+
+bargraph .data rect {
     fill: steelblue;
 }
