@@ -1,7 +1,21 @@
 var angular = require('angular');
 
 var app = angular.module('D3Viz.Constants', [])
-    .constant('BARGRAPH_OPTIONS', {})
+    .constant('BARGRAPH_OPTIONS', {
+        duration: 500,
+        easing: 'cubic',
+        margin: 30,
+        padding: 1,
+        stagger: false,
+        xAxis: {
+            orientation: 'bottom',
+            format: '%Y'
+        },
+        yAxis: {
+            orientation: 'left',
+            format: 'f'
+        }
+    })
     .constant('LINEGRAPH_OPTIONS', {
         dataPoints: {
             radius: 2.5
