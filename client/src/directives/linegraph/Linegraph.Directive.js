@@ -49,8 +49,6 @@ var Linegraph_Directive = function(LINEGRAPH_OPTIONS, d3){
         svg.select('.data')
             .selectAll('circle').data(data)
             
-            
-        
         var line = d3.svg.line()
             .x(function(d){return xScale(d.x);})
             .y(function(d){return yScale(d.y);})
