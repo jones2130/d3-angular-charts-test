@@ -3,7 +3,8 @@ var Linegraph_Directive = function(LINEGRAPH_OPTIONS, d3){
         svg.attr('width', width)
             .attr('height', height);
         
-        var margin = 30;
+        var margin = LINEGRAPH_OPTIONS.margin;
+        var minimumY = d3.min(data, function(d){return d.y});
         
         var xScale = d3.time.scale()
             .domain(d3.extent(data, function(d){return d.x}))
@@ -11,8 +12,8 @@ var Linegraph_Directive = function(LINEGRAPH_OPTIONS, d3){
             
         var xAxis = d3.svg.axis()
             .scale(xScale)
-            .orient('bottom')
-            .tickFormat(d3.time.format('%Y'));
+            .orient(LINEGRAPH_OPTIONS.xAxis.orientation)
+            .tickFormat(d3.time.format(LINEGRAPH_OPTIONS.xAxis.format));
         
         var yScale = d3.time.scale()
             .domain([d3.max(data, function(d){return d.y;}), 0])
@@ -20,8 +21,8 @@ var Linegraph_Directive = function(LINEGRAPH_OPTIONS, d3){
         
         var yAxis = d3.svg.axis()
             .scale(yScale)
-            .orient('left')
-            .tickFormat(d3.format('f'));
+            .orient(LINEGRAPH_OPTIONS.yAxis.orientation)
+            .tickFormat(d3.format(LINEGRAPH_OPTIONS.yAxis.format));
         
         svg.select('.x-axis')
             .attr('transform', 'translate(0, ' + (height - margin) + ')')
@@ -35,14 +36,15 @@ var Linegraph_Directive = function(LINEGRAPH_OPTIONS, d3){
             .selectAll('circle').data(data)
             .enter()
             .append('circle')
-            .attr('r', 2.5)
-            .attr('class', 'data-point')
-            .attr('cx', function(d){return xScale(d.x);})
-            .attr('cy', function(d){return yScale(d.y);});
+            .attr('r', LINEGRAPH_OPTIONS.dataPoints.radius)
+            .attr('class', 'data-point');
         
-        svg.select('.data').selectAll('circle').data(data).transition().duration(0)
+        svg.select('.data').selectAll('circle').data(data)
             .attr('cx', function(d){return xScale(d.x);})
-            .attr('cy', function(d){return yScale(d.y);});;
+            .attr('cy', function(d){return yScale(minimumY);})
+            .transition().duration(LINEGRAPH_OPTIONS.duration)
+            .attr('cx', function(d){return xScale(d.x)})
+            .attr('cy', function(d){return yScale(d.y)});
         
         svg.select('.data').selectAll('circle').data(data).exit().remove();
         
@@ -52,20 +54,63 @@ var Linegraph_Directive = function(LINEGRAPH_OPTIONS, d3){
         var line = d3.svg.line()
             .x(function(d){return xScale(d.x);})
             .y(function(d){return yScale(d.y);})
-            .interpolate('linear');
+            .interpolate(LINEGRAPH_OPTIONS.interpolation);
         
-        svg.select('.data-line').datum(data).attr('d', line);
+        svg.select('.data-line')
+            .datum(data)
+            .transition()
+            .duration(LINEGRAPH_OPTIONS.duration)
+            .attrTween('d', function(){            
+            var start = data.map(function(d){
+                return {x: d.x, y: minimumY};
+            });
+            
+            var interpolate = interpolatePoints(start, data);
+            
+            return function(t){
+                return line(interpolate(t));
+            }
+        });
         
         var area = d3.svg.area()
             .x(function(d){return xScale(d.x);})
             .y0(function(d){return yScale(0);})
             .y1(function(d){return yScale(d.y);})
-            .interpolate('linear');
+            .interpolate(LINEGRAPH_OPTIONS.interpolation);
         
         svg.select('.data-area')
             .datum(data)
-            .attr('d', area);
-    };
+            .transition()
+            .duration(LINEGRAPH_OPTIONS.duration)
+            .attrTween('d', function(){            
+            var start = data.map(function(d){
+                return {x: d.x, y: minimumY};
+            });
+            
+            var interpolate = interpolatePoints(start, data);
+            
+            return function(t){
+                return area(interpolate(t));
+            };
+        });
+    }
+    
+    function interpolatePoints(A,B){
+        var interpolate_x = d3.interpolateArray(A.map(function(d){return d.x;}), B.map(function(d){return d.x;}));
+        var interpolate_y = d3.interpolateArray(A.map(function(d){return d.y;}), B.map(function(d){return d.y;}));
+        
+        return function(t){
+            var x = interpolate_x(t);
+            var y = interpolate_y(t);
+            
+            return x.map(function(d,i){
+                return {
+                    x: x[i],
+                    y: y[i]
+                };
+            });
+        };
+    }
     
     return {
         scope: {
@@ -86,7 +131,6 @@ var Linegraph_Directive = function(LINEGRAPH_OPTIONS, d3){
             
             return function($scope, element, attr){
                 $scope.$watch('data', function(newValue, oldValue){
-                    console.log($scope.data);
                     var data = $scope.data.map(function(d){
                         return {
                             x: d.time,
