@@ -25,6 +25,9 @@ var app = angular.module('D3Viz.States', ['ui.router'])
                     'bargraphTest': {
                         templateUrl: 'src/templates/BargraphTest.htm'
                     },
+                    'eventsTest': {
+                        templateUrl: 'src/templates/EventsTest.htm'
+                    },
                     'logGenerator' : {
                         templateUrl: 'src/templates/LogGenerator.htm'
                     },
